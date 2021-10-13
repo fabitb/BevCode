@@ -57,7 +57,16 @@ def insert_drink(user_barcode, beverages_barcode):
     connection = get_database_connection()
     cursor = connection.cursor()
 
-    cursor.execute(f'INSERT INTO user_drinks_beverage VALUES({user_barcode}, {beverages_barcode})')
+    cursor.execute(f'INSERT INTO user_drinks_beverage (user_barcode,beverage_barcode) VALUES({user_barcode}, {beverages_barcode})')
+    connection.commit()
+    connection.close()
+
+
+def remove_last_drink():
+    connection = get_database_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(f'DELETE FROM user_drinks_beverage WHERE drink_id = (SELECT maxo FROM (SELECT MAX(drink_id) AS maxo FROM user_drinks_beverage) AS tmp)')
     connection.commit()
     connection.close()
 
@@ -84,6 +93,22 @@ def get_overall_drink_count(beverage_code):
     for row in cursor.fetchall():
         count = row[0]
         print(f'{count}')
+
+
+def get_user_bill(user_code):
+    connection = get_database_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        f'SELECT (count * price) AS total '
+        f'FROM (SELECT beverage_barcode, COUNT(beverage_barcode) AS count FROM user_drinks_beverage WHERE user_barcode=={user_code} GROUP BY beverage_barcode) AS tmp '
+        f'JOIN beverages ON tmp.beverage_barcode = beverages.barcode')
+
+    total = 0.0
+    for row in cursor.fetchall():
+        total = total + row[0]
+
+    print(f'Total bill: {total}€')
 
 
 def get_users():

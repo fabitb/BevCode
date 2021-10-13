@@ -13,6 +13,7 @@ CREATE_TABLE_USER = "CREATE TABLE user(" \
                     "name TEXT)"
 
 CREATE_TABLE_USER_DRINKS_BEVERAGE = "CREATE TABLE user_drinks_beverage(" \
+                                    "drink_id INTEGER PRIMARY KEY AUTOINCREMENT, " \
                                     "user_barcode INTEGER, " \
                                     "beverage_barcode INTEGER)"
 
