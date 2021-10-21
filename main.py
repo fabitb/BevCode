@@ -17,11 +17,9 @@ def main_loop():
     input_code = input("Bitte einen Code einscannen: ")
 
     if db.does_user_code_exist(input_code):
-        print("User-Code erkannt!")
         scan_beverage(input_code)
 
     elif db.does_beverage_code_exist(input_code):
-        print("Getränke-Code erkannt!")
         scan_user(input_code)
 
     elif input_code == CODE_EXIT:
@@ -88,4 +86,5 @@ def scan_user(beverage_code):
 
 
 if __name__ == '__main__':
+    db.get_database_connection()
     main_loop()

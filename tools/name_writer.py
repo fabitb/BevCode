@@ -14,7 +14,7 @@ class NameWriter(ImageWriter):
             # determine the maximum width of each line
             pos = (
                 mm2px(xpos, self.dpi) - width // 2,
-                mm2px(ypos, self.dpi) - height // 4,
+                mm2px(ypos, self.dpi) - height * 2,
             )
             self._draw.text(pos, subtext, font=font, fill=self.foreground)
             ypos += pt2mm(self.font_size) / 2 + self.text_line_distance

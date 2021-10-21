@@ -11,14 +11,19 @@ def get_database_connection():
 
 
 def does_user_code_exist(user_barcode):
-    global count
     connection = get_database_connection()
     cursor = connection.cursor()
 
     cursor.execute(f'SELECT COUNT(*) FROM user WHERE barcode={user_barcode}')
 
     for row in cursor.fetchall():
-        return row[0] == 1
+        if row[0] == 1:
+            cursor.execute(f'SELECT name FROM user WHERE barcode={user_barcode}')
+
+            for row2 in cursor.fetchall():
+                print(f"Nutzer*in: {row2[0]}")
+
+            return True
 
     return False
 
@@ -30,7 +35,13 @@ def does_beverage_code_exist(beverage_code):
     cursor.execute(f'SELECT COUNT(*) FROM beverages WHERE barcode={beverage_code}')
 
     for row in cursor.fetchall():
-        return row[0] == 1
+        if row[0] == 1:
+            cursor.execute(f'SELECT name FROM beverages WHERE barcode={beverage_code}')
+
+            for row2 in cursor.fetchall():
+                print(f"Getränk: {row2[0]}")
+
+            return True
 
     return False
 
@@ -39,7 +50,7 @@ def insert_user(barcode, name):
     connection = get_database_connection()
     cursor = connection.cursor()
 
-    cursor.execute(f'INSERT INTO user VALUES({barcode},\'{name}\')')
+    cursor.execute(f'INSERT OR IGNORE INTO user VALUES({barcode},\'{name}\')')
     connection.commit()
     connection.close()
 
@@ -59,6 +70,16 @@ def insert_drink(user_barcode, beverages_barcode):
 
     cursor.execute(f'INSERT INTO user_drinks_beverage (user_barcode,beverage_barcode) VALUES({user_barcode}, {beverages_barcode})')
     connection.commit()
+
+    cursor.execute(f'SELECT name FROM user WHERE barcode={user_barcode}')
+    for row in cursor.fetchall():
+        user_name = row[0]
+
+    cursor.execute(f'SELECT name FROM beverages WHERE barcode={beverages_barcode}')
+    for row in cursor.fetchall():
+        beverage_name = row[0]
+
+    print(f"--> {user_name} trinkt {beverage_name}! <--")
     connection.close()
 
 

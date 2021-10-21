@@ -5,6 +5,10 @@ import barcode.writer
 import name_writer
 from fpdf import FPDF
 
+import repackage
+repackage.up()
+from database import database as db
+
 
 def get_parser():
     parser = argparse.ArgumentParser(description="Generates Name-Barcodes with a provided csv file of names",
@@ -25,8 +29,9 @@ def create_name_codes(args):
 
         for rows in reader:
             ean = barcode.get('code128', str(code), writer=name_writer.NameWriter(name=rows[0]))
-            filename = ean.save("NameCodes/" + rows[0])
+            filename = ean.save("tools/NameCodes/" + rows[0])
             image_list.append(filename)
+            db.insert_user(code, rows[0])
             code = code + 1
 
         pdf = FPDF()
