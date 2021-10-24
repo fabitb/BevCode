@@ -1,4 +1,5 @@
 import sys
+import csv
 import database.database as db
 
 CODE_EXIT = "100"
@@ -32,13 +33,13 @@ def main_loop():
 
     elif input_code == CODE_OVERALL_USER_BILL:
         user_code = input("Scanne einen User, um seine Rechnung anzeigen zu lassen: ")
-        db.get_user_bill(user_code)
+        db.print_user_bill(user_code)
 
     elif input_code == CODE_USER_DRINK_COUNT:
         print("Scanne ein Getränk und dann einen User, um zu sehen wie oft er es getrunken hat ")
         beverage_code = input("Getränk: ")
         user_code = input("User: ")
-        db.get_drink_count(user_code, beverage_code)
+        db.print_drink_count(user_code, beverage_code)
 
     elif input_code == CODE_REMOVE_LAST_DRINK:
         print("Entferne letztes Getränk von der Liste...")
@@ -83,6 +84,34 @@ def scan_user(beverage_code):
         print("Diesen User kenne ich nicht!")
 
     main_loop()
+
+
+def write_data_to_csv():
+
+    with open('result.csv', 'w') as f:
+
+        writer = csv.writer(f)
+
+        header = ['Name']
+        beverages = db.get_beverages()
+
+        for b in beverages:
+            header.append(f'{b[0]} ({b[2]} €)')
+
+        header.append('Betrag')
+        writer.writerow(header)
+
+        users = db.get_users()
+
+        for user in users:
+            data = [f'{user[0]}']
+
+            for bev in beverages:
+                count = db.get_drink_count(user[1], bev[1])
+                data.append(count)
+
+            data.append(f'{db.get_user_bill(user[1])} €')
+            writer.writerow(data)
 
 
 if __name__ == '__main__':

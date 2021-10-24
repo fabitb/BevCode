@@ -92,6 +92,10 @@ def remove_last_drink():
     connection.close()
 
 
+def print_drink_count(user_barcode, beverage_barcode):
+    print(f'{get_drink_count(user_barcode, beverage_barcode)}')
+
+
 def get_drink_count(user_barcode, beverage_barcode):
     connection = get_database_connection()
     cursor = connection.cursor()
@@ -100,8 +104,8 @@ def get_drink_count(user_barcode, beverage_barcode):
         f'SELECT COUNT(*) FROM user_drinks_beverage WHERE user_barcode={user_barcode} AND beverage_barcode={beverage_barcode}')
 
     for row in cursor.fetchall():
-        count = row[0]
-        print(f'{count}')
+        result = row[0]
+        return result
 
 
 def get_overall_drink_count(beverage_code):
@@ -114,6 +118,10 @@ def get_overall_drink_count(beverage_code):
     for row in cursor.fetchall():
         count = row[0]
         print(f'{count}')
+
+
+def print_user_bill(user_code):
+    print(f'Total bill: {get_user_bill(user_code)}€')
 
 
 def get_user_bill(user_code):
@@ -129,31 +137,38 @@ def get_user_bill(user_code):
     for row in cursor.fetchall():
         total = total + row[0]
 
-    print(f'Total bill: {total}€')
+    return total
+
+
+def print_users():
+    for row in get_users():
+        name, barcode = row
+        print(f'{barcode} {name}')
 
 
 def get_users():
     connection = get_database_connection()
     cursor = connection.cursor()
-    cursor.execute('SELECT * FROM user')
-
-    for row in cursor.fetchall():
-        barcode, name = row
-        print(f'{barcode} {name}')
-
+    cursor.execute('SELECT name, barcode FROM user ORDER BY barcode ASC')
+    result = cursor.fetchall()
     connection.close()
+    return result
+
+
+def print_beverages():
+    for row in get_beverages():
+        name, barcode, price = row
+        print(f'{barcode} {name} {price}')
 
 
 def get_beverages():
     connection = get_database_connection()
     cursor = connection.cursor()
-    cursor.execute('SELECT * FROM beverages')
+    cursor.execute('SELECT name, barcode, price FROM beverages ORDER BY barcode ASC')
 
-    for row in cursor.fetchall():
-        barcode, name, price = row
-        print(f'{barcode} {name} {price}')
-
+    result = cursor.fetchall()
     connection.close()
+    return result
 
 
 def mock():
