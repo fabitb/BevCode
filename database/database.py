@@ -55,11 +55,29 @@ def insert_user(barcode, name):
     connection.close()
 
 
+def update_user(barcode, name):
+    connection = get_database_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(f'UPDATE user SET name = \'{name}\' WHERE barcode = {barcode}')
+    connection.commit()
+    connection.close()
+
+
 def insert_beverage(barcode, name, price):
     connection = get_database_connection()
     cursor = connection.cursor()
 
     cursor.execute(f'INSERT INTO beverages VALUES({barcode},\'{name}\', {price})')
+    connection.commit()
+    connection.close()
+
+
+def update_beverage(barcode, name, price):
+    connection = get_database_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(f'UPDATE beverages SET name = \'{name}\', price = {price} WHERE barcode = {barcode}')
     connection.commit()
     connection.close()
 

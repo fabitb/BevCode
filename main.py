@@ -10,6 +10,8 @@ CODE_REMOVE_LAST_DRINK = "104"
 
 CODE_ADD_BEVERAGE = "110"
 CODE_ADD_USER = "111"
+CODE_UPDATE_BEVERAGE = "112"
+CODE_UPDATE_USER = "113"
 
 ABORT = "120"
 
@@ -57,6 +59,19 @@ def main_loop():
         barcode = input("Code: ")
         name = input("Name: ")
         db.insert_user(barcode, name)
+
+    elif input_code == CODE_UPDATE_BEVERAGE:
+        print("Getränk updaten...")
+        barcode = input("Getränk: ")
+        new_name = input("Neuer Name: ")
+        new_price = float(input("Neuer Preis: "))
+        db.update_beverage(barcode, new_name, new_price)
+
+    elif input_code == CODE_UPDATE_USER:
+        print("User updaten...")
+        barcode = input("User: ")
+        new_name = input("Neuer Name: ")
+        db.update_user(barcode, new_name)
 
     else:
         print("Unbekannter Code")

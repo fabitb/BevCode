@@ -7,5 +7,11 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$USER_HOME$/Desktop/vr.we.bev.code.db</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="bev.code.db" uuid="b3b41111-f253-4995-a927-a082533e61a7">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/bev.code.db</jdbc-url>
+    </data-source>
   </component>
 </project>
