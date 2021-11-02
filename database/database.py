@@ -189,6 +189,25 @@ def get_beverages():
     return result
 
 
+def print_user_summary(user_barcode):
+
+    summary = ''
+
+    bevs = get_beverages()
+
+    for b in bevs:
+
+        count = get_drink_count(user_barcode, b[1])
+
+        if count > 0:
+            summary += f'{b[0]}:\t{count}\n'
+
+    if summary == '':
+        print("User hat nix getrunken!")
+    else:
+        print(summary)
+
+
 def mock():
     insert_beverage(4001518112663, "PrinzenRolle", 1.5)
     insert_beverage(4337185499982, "Ananas", 0.85)

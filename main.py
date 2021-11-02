@@ -7,6 +7,7 @@ CODE_OVERALL_DRINK_COUNT = "101"
 CODE_OVERALL_USER_BILL = "102"
 CODE_USER_DRINK_COUNT = "103"
 CODE_REMOVE_LAST_DRINK = "104"
+CODE_USER_SUMMARY = "105"
 
 CODE_ADD_BEVERAGE = "110"
 CODE_ADD_USER = "111"
@@ -46,6 +47,11 @@ def main_loop():
     elif input_code == CODE_REMOVE_LAST_DRINK:
         print("Entferne letztes Getränk von der Liste...")
         db.remove_last_drink()
+
+    elif input_code == CODE_USER_SUMMARY:
+        print("User Gesamtübersicht")
+        user_code = int(input("Bitte User scannen:"))
+        db.print_user_summary(user_code)
 
     elif input_code == CODE_ADD_BEVERAGE:
         print("Ein neues Getränk hinzufügen:")
